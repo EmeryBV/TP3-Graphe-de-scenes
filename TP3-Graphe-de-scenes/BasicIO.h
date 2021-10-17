@@ -40,6 +40,8 @@
 #include <cmath>
 #include <cassert>
 
+
+
 namespace OFFIO{
 
 template< class point_t , class type_t > bool open( const std::string & filename ,
@@ -74,14 +76,14 @@ template< class point_t , class type_t > bool open( const std::string & filename
 
     for( int v = 0 ; v < n_vertices ; ++v )
     {
-        typename point_t::type_t x , y , z;
+        float x , y , z;
         myfile >> x >> y >> z;
         if( std::isnan(x) )
-            x = typename point_t::type_t(0.0);
+            x = 0.0f;
         if( std::isnan(y) )
-            y = typename point_t::type_t(0.0);
+            y = 0.0f;
         if( std::isnan(z) )
-            z = typename point_t::type_t(0.0);
+            z = 0.0f;
         vertices[v] = point_t( x , y , z );
     }
 
@@ -133,6 +135,7 @@ template< class point_t , class type_t > bool open( const std::string & filename
     }
 
     myfile.close();
+//    std::cout << "Fichier chargé "  << std::endl;
     return true;
 }
 

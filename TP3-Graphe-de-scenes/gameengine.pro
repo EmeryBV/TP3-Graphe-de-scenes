@@ -5,6 +5,7 @@ TEMPLATE = app
 
 SOURCES += main.cpp \
     gameobject.cpp \
+    mesh.cpp \
     transform.cpp
 
 SOURCES += \
@@ -12,10 +13,12 @@ SOURCES += \
     geometryengine.cpp
 
 HEADERS += \
+    BasicIO.h \
     camera.h \
     gameobject.h \
     mainwidget.h \
     geometryengine.h \
+    mesh.h \
     transform.h
 
 RESOURCES += \
@@ -25,3 +28,6 @@ RESOURCES += \
 # install
 target.path = $$[YOUR_PATH]
 INSTALLS += target
+
+DISTFILES += \
+    sphere.off

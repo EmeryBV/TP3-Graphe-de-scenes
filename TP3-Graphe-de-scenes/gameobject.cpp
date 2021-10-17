@@ -35,7 +35,7 @@ GameObject& GameObject::addChild(){
     return childList[childList.size()-1];
 }
 
- std::vector<GameObject> &GameObject::getChildList()
+std::vector<GameObject> &GameObject::getChildList()
 {
     return childList;
 }
@@ -59,6 +59,27 @@ void GameObject::Rotate(QQuaternion rotation){
     getTransform().Rotate(rotation);
     this->model.rotate(getTransform().getRotation());
 }
+
+void GameObject::Rotate(int angle, char axe){
+    QVector3D axeSelect = QVector3D(0.0,0.0,0.0);
+    switch(axe){
+
+    case 'x':
+        axeSelect[0] = 1.0;
+        break;
+    case 'y':
+        axeSelect[1] = 1.0;
+        break;
+    case 'z':
+        axeSelect[2] = 1.0;
+        break;
+
+    }
+
+    QQuaternion rotation = QQuaternion(QQuaternion::fromAxisAndAngle(axeSelect,angle));
+    getTransform().Rotate(rotation);
+    this->model.rotate(getTransform().getRotation());
+}
 void GameObject::Scale(float scale){
     getTransform().Scale(scale);
     this->model.scale(scale);
@@ -76,27 +97,35 @@ void GameObject::rotateObject (float angle ){
     this->getTransform().Translate(QVector3D(angle,0.0,0.0));
 }
 
-void GameObject::rotateAroundHimSelf(){
-        long time = 0 ;
-        time = chrono.currentTime().msecsSinceStartOfDay();
-        float amplitude = 0.055f * time ;
-        QQuaternion rotation = QQuaternion::fromAxisAndAngle(QVector3D(0.0,1.0,0.0), amplitude);
-         this->Rotate(rotation);
+void GameObject::rotateAround(float speed, float x , float y, float z ){
+    long time = 0 ;
+    time = chrono.currentTime().msecsSinceStartOfDay();
+    float amplitude = speed * time ;
+    QQuaternion rotation = QQuaternion::fromAxisAndAngle(QVector3D(x,y,z), amplitude);
+    this->Rotate(rotation);
 
-        this->applyTransform();
+    this->applyTransform();
+
 
 }
+void GameObject::importMesh(QString filepath){
+    mesh = new Mesh(filepath,program);
+    meshImport =true;
 
 
+}
+void GameObject::renderMesh(){
+    mesh->inputMesh();
+}
 
 void GameObject::draw(){
-
-     this->geometry->drawCubeGeometry(this->program);
-//    qDebug("%i ", childList.size() );
     program->setUniformValue("mvp_matrix",  projection *view * this->getObject());
+    if(meshImport)renderMesh();
 
+
+//    qDebug("%i ",childList.size() );
     for (GameObject child:  this->childList) {
-//        qDebug("%f La ", child.getTransform().getTranslate()[0] );
+
         child.draw();
     }
 

@@ -16,7 +16,7 @@ class Transform
 
 
     QQuaternion rotation ; // rotation
-    QVector3D translate;    // translation
+    QVector3D position;    // translation
     float scale;    // scaling
 
 

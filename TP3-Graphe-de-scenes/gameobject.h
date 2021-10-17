@@ -11,8 +11,7 @@
 #include "transform.h"
 #include <QTime>
 #include "geometryengine.h"
-#include <QTime>
-
+#include "mesh.h"
 class GameObject
 {
 
@@ -31,6 +30,8 @@ private:
     QMatrix4x4 projection;
     QMatrix4x4 view;
     QTime chrono ;
+    Mesh *mesh ;
+    bool meshImport=false;
 
 protected:
 
@@ -41,19 +42,23 @@ public:
     GameObject& addChild();
 
     QMatrix4x4 getObject();
-    void rotateAroundHimSelf() ;
+    void rotateAround(float speed, float x , float y, float z ) ;
 
 
     void Translate(QVector3D translation);
     void Translate(float x, float y , float z );
     void Rotate(QQuaternion rotation);
+    void Rotate(int angle, char axe);
     void Scale(float scale);
 
     Transform &getTransform();
     void applyTransform();
     void draw();
+    void drawChild();
     void assignTexture(char *value, int idx);
     void rotateObject (float angle );
+    void importMesh(QString filepath);
+    void renderMesh();
 
      std::vector<GameObject> &getChildList() ;
 };

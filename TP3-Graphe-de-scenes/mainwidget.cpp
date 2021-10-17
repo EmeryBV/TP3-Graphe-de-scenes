@@ -55,6 +55,8 @@
 #include <iostream>
 #include <math.h>
 #include <QElapsedTimer>
+#include <QApplication>
+
 
 
 bool rotate = false;
@@ -147,7 +149,7 @@ void MainWidget::initializeGL()
     glEnable(GL_DEPTH_TEST);
 
    glPolygonMode( GL_FRONT_AND_BACK, GL_FILL);
- //glPolygonMode( GL_FRONT_AND_BACK, GL_LINE);
+// glPolygonMode( GL_FRONT_AND_BACK, GL_LINE);
     // Enable back face culling
 //    glEnable(GL_CULL_FACE);
 //! [2]
@@ -280,6 +282,10 @@ void MainWidget::paintGL()
     textureSnow->bind(3);
 //! [6]
     // Calculate model view transformation
+    std::vector< QVector3D> vertices;
+    std::vector< std::vector< unsigned int >> faces;
+
+    QString filepath =  "../TP3-Graphe-de-scenes/sphere.off";
 
 
 
@@ -293,20 +299,26 @@ void MainWidget::paintGL()
 
     world =  GameObject(matrix,geometries,&program,projection,view);
 
-    GameObject &Child = world.addChild();
-    Child.Translate(1.,1.0,0.0);
-    Child.rotateAroundHimSelf();
+    GameObject &Sun = world.addChild();
+    Sun.importMesh(filepath);
+    Sun.rotateAround(0.055,0.0,1.0,0.0);
 
-    world.rotateAroundHimSelf();
+    GameObject &Earth = Sun.addChild();
+    Earth.importMesh(filepath);
+    Earth.Translate(2.0,0.0,0.0);
+    Earth.Rotate(23.44,'y');
+    Earth.Scale(0.6783/4);
+
+    GameObject &Moon = Earth.addChild();
+    Moon.importMesh(filepath);
+    Moon.Translate(-2.0,0.0,0.0);
+    Moon.rotateAround(0.055,0.0,1.0,1.0);
+    Moon.Translate(2.0,0.0,0.0);
+    Moon.Scale(0.1738);
+
+
+    world.draw();
     update();
-    world.Translate(0.0,-1.0,0.0);
-
-    world.Rotate( QQuaternion::fromAxisAndAngle(QVector3D(1,0.0,0.0), 90));
-
-
-
-
-//    child = GameObject(matrix2,geometries,&program);
 
 //    world.rotateObject(0.1*(float)chrono.currentTime().second());
 
@@ -319,12 +331,10 @@ void MainWidget::paintGL()
 //    qDebug("%f ", world.getTransform().getTranslate()[0] );
 
 
-    world.assignTexture("texture", 0);
-    world.assignTexture("textureGrass", 1);
-    world.assignTexture("textureRock", 2);
-    world.assignTexture("textureSnow", 3);
-
-
+//    world.assignTexture((char *)"texture", 0);
+//    world.assignTexture((char *)"textureGrass", 1);
+//    world.assignTexture((char *)"textureRock", 2);
+//    world.assignTexture((char *)"textureSnow", 3);
 
 
 
@@ -336,7 +346,7 @@ void MainWidget::paintGL()
 //     program.setUniformValue("textureRock", 2);
 //      program.setUniformValue("textureSnow", 3);
     // Draw cube geometry
-    world.draw();
+//    world.draw();
 }
 
 

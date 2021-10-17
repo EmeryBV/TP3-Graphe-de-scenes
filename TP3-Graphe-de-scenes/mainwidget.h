@@ -62,6 +62,7 @@
 #include <QOpenGLShaderProgram>
 #include <QOpenGLTexture>
 #include "camera.h"
+
 #include <QTime>
 
 class GeometryEngine;
@@ -82,7 +83,6 @@ protected:
     void mousePressEvent(QMouseEvent *e) override;
     void mouseReleaseEvent(QMouseEvent *e) override;
     void timerEvent(QTimerEvent *e) override;
-
     void initializeGL() override;
     void resizeGL(int w, int h) override;
     void paintGL() override;
