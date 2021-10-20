@@ -20,6 +20,12 @@ GameObject::GameObject(QMatrix4x4 &model, GeometryEngine *geometry, QOpenGLShade
     }
 }
 
+GameObject::~GameObject()
+{
+    //    model.destroy();
+    //    transform.destroy();
+}
+
 bool GameObject::isInstanciate(){
     return this->instanciate;
 }
@@ -123,7 +129,7 @@ void GameObject::draw(){
     if(meshImport)renderMesh();
 
 
-//    qDebug("%i ",childList.size() );
+    //    qDebug("%i ",childList.size() );
     for (GameObject child:  this->childList) {
 
         child.draw();

@@ -37,6 +37,7 @@ protected:
 
 public:
     GameObject();
+    ~GameObject();
     GameObject(QMatrix4x4 &matrix, GeometryEngine *geometry, QOpenGLShaderProgram *program, QMatrix4x4 projection,  QMatrix4x4 view );
     bool isInstanciate();
     GameObject& addChild();
@@ -44,7 +45,8 @@ public:
     QMatrix4x4 getObject();
     void rotateAround(float speed, float x , float y, float z ) ;
 
-
+    QMatrix4x4 matrix;
+    QMatrix4x4 matrix2;
     void Translate(QVector3D translation);
     void Translate(float x, float y , float z );
     void Rotate(QQuaternion rotation);

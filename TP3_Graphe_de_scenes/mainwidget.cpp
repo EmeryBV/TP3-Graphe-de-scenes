@@ -60,8 +60,8 @@
 #include <unistd.h>
 
 bool rotate = false;
- GameObject world;
- GameObject child;
+GameObject world ;
+GameObject child;
 MainWidget::MainWidget(QWidget *parent) :
     QOpenGLWidget(parent),
     geometries(0),
@@ -144,15 +144,15 @@ void MainWidget::initializeGL()
     initShaders();
     initTextures();
 
-//! [2]
+    //! [2]
     // Enable depth buffer
     glEnable(GL_DEPTH_TEST);
 
-   glPolygonMode( GL_FRONT_AND_BACK, GL_FILL);
- glPolygonMode( GL_FRONT_AND_BACK, GL_LINE);
+    glPolygonMode( GL_FRONT_AND_BACK, GL_FILL);
+    glPolygonMode( GL_FRONT_AND_BACK, GL_LINE);
     // Enable back face culling
-//    glEnable(GL_CULL_FACE);
-//! [2]
+    //    glEnable(GL_CULL_FACE);
+    //! [2]
 
     geometries = new GeometryEngine;
 
@@ -239,35 +239,35 @@ void MainWidget::keyPressEvent(QKeyEvent *event)
     float amplitude = 0.25;
 
     switch (event->key()) {
-        case Qt::Key_Right:
-            cameraPos[0]+=amplitude;
-            update();
-            break;
-        case Qt::Key_Left:
-            cameraPos[0]-=amplitude;
-            update();
-            break;
-        case Qt::Key_Up:
-           cameraPos[2]+=amplitude;
-           update();
-          break;
-        case Qt::Key_Down:
-            cameraPos[2]-=amplitude;
-            update();
-            break;
+    case Qt::Key_Right:
+        cameraPos[0]+=amplitude;
+        update();
+        break;
+    case Qt::Key_Left:
+        cameraPos[0]-=amplitude;
+        update();
+        break;
+    case Qt::Key_Up:
+        cameraPos[2]+=amplitude;
+        update();
+        break;
+    case Qt::Key_Down:
+        cameraPos[2]-=amplitude;
+        update();
+        break;
 
-        case Qt::Key_R:
-        {
-            if(rotate == false)rotate = true;
-            else rotate = false;
-//            qDebug("%i", rotate);
-            break;
+    case Qt::Key_R:
+    {
+        if(rotate == false)rotate = true;
+        else rotate = false;
+        //            qDebug("%i", rotate);
+        break;
 
-         }
+    }
     }
 
 
-update();
+    update();
 }
 
 
@@ -280,7 +280,7 @@ void MainWidget::paintGL()
     textureGrass->bind(1);
     textureRock->bind(2);
     textureSnow->bind(3);
-//! [6]
+    //! [6]
     // Calculate model view transformation
     std::vector< QVector3D> vertices;
     std::vector< std::vector< unsigned int >> faces;
@@ -313,37 +313,37 @@ void MainWidget::paintGL()
     Moon.Translate(2.0,0.0,0.0);
     Moon.Scale(0.1738);
 
-
     world.draw();
     update();
 
-//    world.rotateObject(0.1*(float)chrono.currentTime().second());
+//    delete world
+    //    world.rotateObject(0.1*(float)chrono.currentTime().second());
 
-//    QVector3D translationTest = QVector3D(1.0,0.0,0.0);
-//    world.getTransform().Translate(translationTest);
-//    world.applyTransform();
-
-
-
-//    qDebug("%f ", world.getTransform().getTranslate()[0] );
-
-
-//    world.assignTexture((char *)"texture", 0);
-//    world.assignTexture((char *)"textureGrass", 1);
-//    world.assignTexture((char *)"textureRock", 2);
-//    world.assignTexture((char *)"textureSnow", 3);
+    //    QVector3D translationTest = QVector3D(1.0,0.0,0.0);
+    //    world.getTransform().Translate(translationTest);
+    //    world.applyTransform();
 
 
 
-//! [6]
+    //    qDebug("%f ", world.getTransform().getTranslate()[0] );
+
+
+    //    world.assignTexture((char *)"texture", 0);
+    //    world.assignTexture((char *)"textureGrass", 1);
+    //    world.assignTexture((char *)"textureRock", 2);
+    //    world.assignTexture((char *)"textureSnow", 3);
+
+
+
+    //! [6]
     // Use texture unit 0 which contains cube.png
 
-//    program.setUniformValue("texture", 0);
-//    program.setUniformValue("textureGrass", 1);
-//     program.setUniformValue("textureRock", 2);
-//      program.setUniformValue("textureSnow", 3);
+    //    program.setUniformValue("texture", 0);
+    //    program.setUniformValue("textureGrass", 1);
+    //     program.setUniformValue("textureRock", 2);
+    //      program.setUniformValue("textureSnow", 3);
     // Draw cube geometry
-//    world.draw();
+    //    world.draw();
 }
 
 

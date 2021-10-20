@@ -110,6 +110,8 @@ private:
     QMatrix4x4 projection;
     QMatrix4x4 view;
 
+    QMatrix4x4 matrix;
+    QMatrix4x4 matrix2;
 
     QVector2D mousePressPosition;
     QVector3D rotationAxis;
