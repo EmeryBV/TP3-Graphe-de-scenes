@@ -8,16 +8,12 @@ GameObject::GameObject()
     this->transform = Transform();
 }
 
-GameObject::GameObject(QMatrix4x4 &model, GeometryEngine *geometry, QOpenGLShaderProgram *program, QMatrix4x4 projection,  QMatrix4x4 view )
+GameObject::GameObject(QMatrix4x4 &model)
 {
-    if(!instanciate)    {
-        this->model = model;
-        this->transform = Transform();
-        this->geometry = geometry;
-        this->program = program;
-        this->projection = projection;
-        this->view = view;
-    }
+    this->model = model;
+    this->transform = Transform();
+
+    chrono.start();
 }
 
 GameObject::~GameObject()
@@ -35,8 +31,9 @@ QMatrix4x4 GameObject::getObject(){
 }
 
 GameObject& GameObject::addChild(){
-    GameObject child = GameObject(model,geometry,program,this->projection,this->view);
+    GameObject child = GameObject(model);
     child.transform = this->transform;
+    child.parent = this;
     this->childList.push_back(child);
     return childList[childList.size()-1];
 }
@@ -45,6 +42,13 @@ std::vector<GameObject> &GameObject::getChildList()
 {
     return childList;
 }
+
+
+void GameObject::setColor(float R, float G, float B, float alpha)
+{
+    color = QVector4D(R,G,B,alpha);
+}
+
 
 Transform &GameObject::getTransform(){
     return this->transform;
@@ -66,7 +70,7 @@ void GameObject::Rotate(QQuaternion rotation){
     this->model.rotate(getTransform().getRotation());
 }
 
-void GameObject::Rotate(int angle, char axe){
+void GameObject::Rotate(float angle, char axe){
     QVector3D axeSelect = QVector3D(0.0,0.0,0.0);
     switch(axe){
 
@@ -96,7 +100,7 @@ void GameObject::applyTransform(){
 }
 
 void GameObject::assignTexture(char* value, int idx){
-    program->setUniformValue(value,idx);
+    //    program->setUniformValue(value,idx);
 }
 
 void GameObject::rotateObject (float angle ){
@@ -105,34 +109,45 @@ void GameObject::rotateObject (float angle ){
 
 void GameObject::rotateAround(float speed, float x , float y, float z ){
     long time = 0 ;
-    time = chrono.currentTime().msecsSinceStartOfDay();
-    float amplitude = speed * time ;
+    float currentFrame = chrono.elapsed();
+
+    lastFrame = currentFrame;
+
+    float amplitude = speed * currentFrame ;
     QQuaternion rotation = QQuaternion::fromAxisAndAngle(QVector3D(x,y,z), amplitude);
     this->Rotate(rotation);
 
-    this->applyTransform();
 
 
 }
-void GameObject::importMesh(QString filepath){
+void GameObject::importMesh(QString filepath,QOpenGLShaderProgram *program){
     mesh = new Mesh(filepath,program);
     meshImport =true;
-
 
 }
 void GameObject::renderMesh(){
     mesh->inputMesh();
 }
 
-void GameObject::draw(){
+void GameObject::resetModel(){
+//    this->transform=  Transform();
+    model.setToIdentity();
+}
+
+void GameObject::assignParentTrans()
+{
+    this->model = parent->model;
+}
+void GameObject::draw( QOpenGLShaderProgram *program, QMatrix4x4 projection,  QMatrix4x4 view ){
     program->setUniformValue("mvp_matrix",  projection *view * this->getObject());
+    program->setUniformValue("ourColor", color);
     if(meshImport)renderMesh();
 
 
     //    qDebug("%i ",childList.size() );
     for (GameObject child:  this->childList) {
 
-        child.draw();
+        child.draw(program,projection,view );
     }
 
 

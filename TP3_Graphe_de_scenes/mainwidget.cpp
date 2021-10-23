@@ -67,6 +67,7 @@ MainWidget::MainWidget(QWidget *parent) :
     geometries(0),
     heightMap(0),
     angularSpeed(0)
+
 {
 }
 
@@ -92,6 +93,7 @@ void MainWidget::mousePressEvent(QMouseEvent *e)
 {
     // Save mouse press position
     mousePressPosition = QVector2D(e->localPos());
+
 }
 
 void MainWidget::mouseReleaseEvent(QMouseEvent *e)
@@ -112,10 +114,8 @@ void MainWidget::mouseReleaseEvent(QMouseEvent *e)
     // Increase angular speed
     angularSpeed += acc;
 }
-//! [0]
 
 
-//! [1]
 void MainWidget::timerEvent(QTimerEvent *)
 {
     // Decrease angular speed (friction)
@@ -127,7 +127,6 @@ void MainWidget::timerEvent(QTimerEvent *)
     } else {
         // Update rotation
         rotation = QQuaternion::fromAxisAndAngle(rotationAxis, angularSpeed) * rotation;
-
         // Request an update
         update();
     }
@@ -157,7 +156,26 @@ void MainWidget::initializeGL()
     geometries = new GeometryEngine;
 
     // Use QBasicTimer because its faster than QTimer
+    timer.start(12, this);
+    filepath =  QString("../TP3_Graphe_de_scenes/sphere.off");
+    chrono.start();
+    world = new GameObject(matrix);
+
+    cameraGo = &world->addChild();
+
+    Sun = &world->addChild();
+    Sun->importMesh(filepath,&program);
+    Sun->setColor(1.0,0.5,0.0,1.0);
+
+    Earth = &Sun->addChild();
+    Earth->importMesh(filepath,&program);
+    Earth->setColor(0.0,0.0,1.0,1.0);
+
+    Moon = &Earth->addChild();
+    Moon->importMesh(filepath,&program);
+    Moon->setColor(0.7,0.7,0.7,1.0);
 }
+
 
 //! [3]
 void MainWidget::initShaders()
@@ -236,38 +254,54 @@ void MainWidget::resizeGL(int w, int h)
 void MainWidget::keyPressEvent(QKeyEvent *event)
 {
 
-    float amplitude = 0.25;
+    float amplitude = 0.10;
 
     switch (event->key()) {
-    case Qt::Key_Right:
-        cameraPos[0]+=amplitude;
-        update();
-        break;
-    case Qt::Key_Left:
+    case Qt::Key_D:
+
         cameraPos[0]-=amplitude;
+        cameraFront[0]-=amplitude;
         update();
         break;
-    case Qt::Key_Up:
+    case Qt::Key_Q:
+        cameraPos[0]+=amplitude;
+        cameraFront[0]+=amplitude;
+        update();
+        break;
+
+    case Qt::Key_Z:
+        cameraPos[1]+=amplitude;
+        cameraFront[1]+=amplitude;
+        update();
+        break;
+    case Qt::Key_S:
+        cameraPos[1]-=amplitude;
+        cameraFront[1]-=amplitude;
+        update();
+        break;
+    case Qt::Key_E:
         cameraPos[2]+=amplitude;
+        cameraFront[2]+=amplitude;
         update();
         break;
-    case Qt::Key_Down:
+    case Qt::Key_A:
         cameraPos[2]-=amplitude;
+        cameraFront[2]-=amplitude;
         update();
         break;
 
-    case Qt::Key_R:
-    {
-        if(rotate == false)rotate = true;
-        else rotate = false;
-        //            qDebug("%i", rotate);
-        break;
-
-    }
     }
 
 
     update();
+}
+
+void MainWidget::wheelEvent ( QWheelEvent * event )
+{
+    cameraPos[2]+=(event->delta()/120);
+    cameraFront[2]+=(event->delta()/120);
+    update();
+//    scale+=(event->delta()/120);
 }
 
 
@@ -285,38 +319,40 @@ void MainWidget::paintGL()
     std::vector< QVector3D> vertices;
     std::vector< std::vector< unsigned int >> faces;
 
-    QString filepath =  QString("../TP3_Graphe_de_scenes/sphere.off");
 
-    QMatrix4x4 matrix;
-    QMatrix4x4 matrix2;
-    matrix.rotate(rotation2);
-
-    Camera camera =  Camera(cameraPos,cameraFront);
+    camera =  Camera(cameraPos,cameraFront);
     view = camera.getViewMatrix();
+    //    qDebug("rotation: %f ", rotation );
+    world->Rotate(rotation);
+    Moon->resetModel();
+    Earth->resetModel();
+    Sun->resetModel();
 
-    world =  GameObject(matrix,geometries,&program,projection,view);
 
-    GameObject &Sun = world.addChild();
-    Sun.importMesh(filepath);
-    Sun.rotateAround(0.055,0.0,1.0,0.0);
 
-    GameObject &Earth = Sun.addChild();
-    Earth.importMesh(filepath);
-    Earth.Translate(2.0,0.0,0.0);
-    Earth.Rotate(23.44,'y');
-    Earth.Scale(0.6783/4);
+    Sun->rotateAround(0.1,0.0,1.0,0.0);
 
-    GameObject &Moon = Earth.addChild();
-    Moon.importMesh(filepath);
-    Moon.Translate(-2.0,0.0,0.0);
-    Moon.rotateAround(0.055,0.0,1.0,1.0);
-    Moon.Translate(2.0,0.0,0.0);
-    Moon.Scale(0.1738);
+    Earth->assignParentTrans();
 
-    world.draw();
+    Earth->Scale(0.6783/4);
+    Earth->Translate(10.0,0.0,0.0);
+    Earth->Rotate(23.55,'z');
+    Earth->rotateAround(0.1,0.0,1.0,0.0);
+    Earth->Translate(-10.0,0.0,0.0);
+
+    Moon->assignParentTrans();
+
+    Moon->Scale(0.1738);
+    Moon->Translate(10.0,0.0,0.0);
+    Moon->Rotate(6.68,'z');
+//    Moon->rotateAround(0.0100,0.0,1.0,0.0);
+    Moon->Translate(-10.0,0.0,0.0);
+
+
+    world->draw(&program,projection,view);
     update();
 
-//    delete world
+    //    delete world
     //    world.rotateObject(0.1*(float)chrono.currentTime().second());
 
     //    QVector3D translationTest = QVector3D(1.0,0.0,0.0);
@@ -325,7 +361,7 @@ void MainWidget::paintGL()
 
 
 
-    //    qDebug("%f ", world.getTransform().getTranslate()[0] );
+
 
 
     //    world.assignTexture((char *)"texture", 0);
@@ -338,7 +374,7 @@ void MainWidget::paintGL()
     //! [6]
     // Use texture unit 0 which contains cube.png
 
-    //    program.setUniformValue("texture", 0);
+
     //    program.setUniformValue("textureGrass", 1);
     //     program.setUniformValue("textureRock", 2);
     //      program.setUniformValue("textureSnow", 3);

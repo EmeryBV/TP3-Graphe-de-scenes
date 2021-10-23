@@ -23,22 +23,19 @@ private:
     Transform transform;
     bool instanciate = false;
     GameObject *parent;
-
-    GeometryEngine *geometry;
-    QOpenGLShaderProgram *program;
-
-    QMatrix4x4 projection;
-    QMatrix4x4 view;
     QTime chrono ;
+    float lastFrame;
+    float currentFrame;
     Mesh *mesh ;
     bool meshImport=false;
+    QVector4D color = QVector4D(1.0f,1.0f,1.0f,1.0f);
 
 protected:
 
 public:
     GameObject();
     ~GameObject();
-    GameObject(QMatrix4x4 &matrix, GeometryEngine *geometry, QOpenGLShaderProgram *program, QMatrix4x4 projection,  QMatrix4x4 view );
+    GameObject(QMatrix4x4 &matrix);
     bool isInstanciate();
     GameObject& addChild();
 
@@ -50,19 +47,22 @@ public:
     void Translate(QVector3D translation);
     void Translate(float x, float y , float z );
     void Rotate(QQuaternion rotation);
-    void Rotate(int angle, char axe);
+    void Rotate(float angle, char axe);
     void Scale(float scale);
 
     Transform &getTransform();
     void applyTransform();
-    void draw();
+    void draw( QOpenGLShaderProgram *program, QMatrix4x4 projection,  QMatrix4x4 view );
     void drawChild();
     void assignTexture(char *value, int idx);
     void rotateObject (float angle );
-    void importMesh(QString filepath);
+    void importMesh(QString filepath,QOpenGLShaderProgram *program);
     void renderMesh();
+    void resetModel();
+    void assignParentTrans();
 
-     std::vector<GameObject> &getChildList() ;
+    std::vector<GameObject> &getChildList() ;
+    void setColor(float R, float G, float B, float alpha);
 };
 
 

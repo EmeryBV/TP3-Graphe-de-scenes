@@ -18,8 +18,8 @@ Transform::Transform(QQuaternion &rotation, float &scale, QVector3D &translation
 void Transform::applyToModel(QMatrix4x4 &model){
 
 //       model.translate(this->translate);
-        model.rotate(this->rotation);
         model.scale(this->scale);
+        model.rotate(this->rotation);
         model.translate(this->position);
 }
 

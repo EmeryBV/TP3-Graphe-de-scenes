@@ -56,12 +56,14 @@
 #include <QOpenGLWidget>
 #include <QOpenGLFunctions>
 #include <QMatrix4x4>
+#include <QVector4D>
 #include <QQuaternion>
 #include <QVector2D>
 #include <QBasicTimer>
 #include <QOpenGLShaderProgram>
 #include <QOpenGLTexture>
 #include "camera.h"
+#include "gameobject.h"
 
 #include <QTime>
 
@@ -82,6 +84,7 @@ void modifFPS(int x);
 protected:
     void mousePressEvent(QMouseEvent *e) override;
     void mouseReleaseEvent(QMouseEvent *e) override;
+    void wheelEvent(QWheelEvent *event)  override;
     void timerEvent(QTimerEvent *e) override;
     void initializeGL() override;
     void resizeGL(int w, int h) override;
@@ -100,12 +103,17 @@ private:
     QTime chrono ;
     float positionX = 0.0;
     float positionZ = 0.0;
+    QString filepath =  QString("../TP3_Graphe_de_scenes/sphere.off");
     QOpenGLTexture *heightMap;
-
+    QBasicTimer timer;
     QOpenGLTexture * textureGrass;
     QOpenGLTexture * textureRock;
     QOpenGLTexture * textureSnow;
-
+    GameObject *world ;
+    GameObject *Sun;
+    GameObject *Earth;
+    GameObject *Moon;
+    GameObject *cameraGo;
 
     QMatrix4x4 projection;
     QMatrix4x4 view;
@@ -113,14 +121,15 @@ private:
     QMatrix4x4 matrix;
     QMatrix4x4 matrix2;
 
+    Camera camera ;
     QVector2D mousePressPosition;
     QVector3D rotationAxis;
     qreal angularSpeed;
     QQuaternion rotation;
     QQuaternion rotation2;
     float value ;
-    QVector3D cameraPos   =QVector3D(1.0f, 1.0f,  -5.0f);
-    QVector3D cameraFront = QVector3D(0.0,0.0,-0.0);
+    QVector3D cameraPos   =QVector3D(0.0f, 0.0f,  -5.0f);
+    QVector3D cameraFront = QVector3D(0.0,0.0,0.0);
     QVector3D cameraUp    = QVector3D(0.0f, 1.0f,  0.0f);
 
 

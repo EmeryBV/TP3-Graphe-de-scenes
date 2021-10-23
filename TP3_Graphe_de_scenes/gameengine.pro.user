@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 5.0.2, 2021-10-20T16:01:05. -->
+<!-- Written by QtCreator 5.0.2, 2021-10-21T16:23:46. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -245,7 +245,7 @@
     <value type="bool" key="RunConfiguration.UseLibrarySearchPath">true</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default">/home/bourget-vecchio/Documents/Master_IMAGINA/M2/Moteur_de_jeu/TP3</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">/home/bourget-vecchio/Documents/Master_IMAGINA/M2/Moteur_de_jeu/TP3/build</value>
    </valuemap>
    <value type="int" key="ProjectExplorer.Target.RunConfigurationCount">1</value>
   </valuemap>
