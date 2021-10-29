@@ -38,6 +38,7 @@ public:
         return view;
     }
 
+
 };
 
 #endif // CAMERA_H

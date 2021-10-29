@@ -225,7 +225,7 @@ DIST          = ../TP3_Graphe_de_scenes/sphere.off \
 		/home/bourget-vecchio/Qt/5.12.11/gcc_64/mkspecs/features/qt_config.prf \
 		/home/bourget-vecchio/Qt/5.12.11/gcc_64/mkspecs/linux-g++/qmake.conf \
 		/home/bourget-vecchio/Qt/5.12.11/gcc_64/mkspecs/features/spec_post.prf \
-		../.qmake.stash \
+		../TP3_Graphe_de_scenes/.qmake.stash \
 		/home/bourget-vecchio/Qt/5.12.11/gcc_64/mkspecs/features/exclusive_builds.prf \
 		/home/bourget-vecchio/Qt/5.12.11/gcc_64/mkspecs/features/toolchain.prf \
 		/home/bourget-vecchio/Qt/5.12.11/gcc_64/mkspecs/features/default_pre.prf \
@@ -421,7 +421,7 @@ Makefile: ../TP3_Graphe_de_scenes/gameengine.pro /home/bourget-vecchio/Qt/5.12.1
 		/home/bourget-vecchio/Qt/5.12.11/gcc_64/mkspecs/features/qt_config.prf \
 		/home/bourget-vecchio/Qt/5.12.11/gcc_64/mkspecs/linux-g++/qmake.conf \
 		/home/bourget-vecchio/Qt/5.12.11/gcc_64/mkspecs/features/spec_post.prf \
-		../.qmake.stash \
+		.qmake.stash \
 		/home/bourget-vecchio/Qt/5.12.11/gcc_64/mkspecs/features/exclusive_builds.prf \
 		/home/bourget-vecchio/Qt/5.12.11/gcc_64/mkspecs/features/toolchain.prf \
 		/home/bourget-vecchio/Qt/5.12.11/gcc_64/mkspecs/features/default_pre.prf \
@@ -599,7 +599,7 @@ Makefile: ../TP3_Graphe_de_scenes/gameengine.pro /home/bourget-vecchio/Qt/5.12.1
 /home/bourget-vecchio/Qt/5.12.11/gcc_64/mkspecs/features/qt_config.prf:
 /home/bourget-vecchio/Qt/5.12.11/gcc_64/mkspecs/linux-g++/qmake.conf:
 /home/bourget-vecchio/Qt/5.12.11/gcc_64/mkspecs/features/spec_post.prf:
-../.qmake.stash:
+.qmake.stash:
 /home/bourget-vecchio/Qt/5.12.11/gcc_64/mkspecs/features/exclusive_builds.prf:
 /home/bourget-vecchio/Qt/5.12.11/gcc_64/mkspecs/features/toolchain.prf:
 /home/bourget-vecchio/Qt/5.12.11/gcc_64/mkspecs/features/default_pre.prf:
@@ -650,6 +650,7 @@ clean: compiler_clean
 
 distclean: clean 
 	-$(DEL_FILE) $(TARGET) 
+	-$(DEL_FILE) .qmake.stash
 	-$(DEL_FILE) Makefile
 
 
@@ -829,6 +830,7 @@ moc_mainwidget.cpp: ../TP3_Graphe_de_scenes/mainwidget.h \
 		/home/bourget-vecchio/Qt/5.12.11/gcc_64/include/QtGui/QOpenGLFunctions \
 		/home/bourget-vecchio/Qt/5.12.11/gcc_64/include/QtGui/qopenglfunctions.h \
 		/home/bourget-vecchio/Qt/5.12.11/gcc_64/include/QtGui/QMatrix4x4 \
+		/home/bourget-vecchio/Qt/5.12.11/gcc_64/include/QtGui/QVector4D \
 		/home/bourget-vecchio/Qt/5.12.11/gcc_64/include/QtGui/QQuaternion \
 		/home/bourget-vecchio/Qt/5.12.11/gcc_64/include/QtGui/QVector2D \
 		/home/bourget-vecchio/Qt/5.12.11/gcc_64/include/QtCore/QBasicTimer \
@@ -837,8 +839,16 @@ moc_mainwidget.cpp: ../TP3_Graphe_de_scenes/mainwidget.h \
 		/home/bourget-vecchio/Qt/5.12.11/gcc_64/include/QtGui/qopengltexture.h \
 		../TP3_Graphe_de_scenes/camera.h \
 		/home/bourget-vecchio/Qt/5.12.11/gcc_64/include/QtGui/QVector3D \
+		../TP3_Graphe_de_scenes/gameobject.h \
+		../TP3_Graphe_de_scenes/transform.h \
 		/home/bourget-vecchio/Qt/5.12.11/gcc_64/include/QtCore/QTime \
 		/home/bourget-vecchio/Qt/5.12.11/gcc_64/include/QtCore/qdatetime.h \
+		../TP3_Graphe_de_scenes/mesh.h \
+		../TP3_Graphe_de_scenes/BasicIO.h \
+		/home/bourget-vecchio/Qt/5.12.11/gcc_64/include/QtCore/QString \
+		/home/bourget-vecchio/Qt/5.12.11/gcc_64/include/QtCore/QStringList \
+		/home/bourget-vecchio/Qt/5.12.11/gcc_64/include/QtCore/QFile \
+		/home/bourget-vecchio/Qt/5.12.11/gcc_64/include/QtCore/QDataStream \
 		moc_predefs.h \
 		/home/bourget-vecchio/Qt/5.12.11/gcc_64/bin/moc
 	/home/bourget-vecchio/Qt/5.12.11/gcc_64/bin/moc $(DEFINES) --include /home/bourget-vecchio/Documents/Master_IMAGINA/M2/Moteur_de_jeu/TP3/build/moc_predefs.h -I/home/bourget-vecchio/Qt/5.12.11/gcc_64/mkspecs/linux-g++ -I/home/bourget-vecchio/Documents/Master_IMAGINA/M2/Moteur_de_jeu/TP3/TP3_Graphe_de_scenes -I/home/bourget-vecchio/Qt/5.12.11/gcc_64/include -I/home/bourget-vecchio/Qt/5.12.11/gcc_64/include/QtWidgets -I/home/bourget-vecchio/Qt/5.12.11/gcc_64/include/QtGui -I/home/bourget-vecchio/Qt/5.12.11/gcc_64/include/QtCore -I. -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../TP3_Graphe_de_scenes/mainwidget.h -o moc_mainwidget.cpp
@@ -1001,6 +1011,7 @@ main.o: ../TP3_Graphe_de_scenes/main.cpp /home/bourget-vecchio/Qt/5.12.11/gcc_64
 		/home/bourget-vecchio/Qt/5.12.11/gcc_64/include/QtGui/QOpenGLFunctions \
 		/home/bourget-vecchio/Qt/5.12.11/gcc_64/include/QtGui/qopenglfunctions.h \
 		/home/bourget-vecchio/Qt/5.12.11/gcc_64/include/QtGui/QMatrix4x4 \
+		/home/bourget-vecchio/Qt/5.12.11/gcc_64/include/QtGui/QVector4D \
 		/home/bourget-vecchio/Qt/5.12.11/gcc_64/include/QtGui/QQuaternion \
 		/home/bourget-vecchio/Qt/5.12.11/gcc_64/include/QtGui/QVector2D \
 		/home/bourget-vecchio/Qt/5.12.11/gcc_64/include/QtCore/QBasicTimer \
@@ -1009,8 +1020,16 @@ main.o: ../TP3_Graphe_de_scenes/main.cpp /home/bourget-vecchio/Qt/5.12.11/gcc_64
 		/home/bourget-vecchio/Qt/5.12.11/gcc_64/include/QtGui/qopengltexture.h \
 		../TP3_Graphe_de_scenes/camera.h \
 		/home/bourget-vecchio/Qt/5.12.11/gcc_64/include/QtGui/QVector3D \
+		../TP3_Graphe_de_scenes/gameobject.h \
+		../TP3_Graphe_de_scenes/transform.h \
 		/home/bourget-vecchio/Qt/5.12.11/gcc_64/include/QtCore/QTime \
-		/home/bourget-vecchio/Qt/5.12.11/gcc_64/include/QtCore/qdatetime.h
+		/home/bourget-vecchio/Qt/5.12.11/gcc_64/include/QtCore/qdatetime.h \
+		../TP3_Graphe_de_scenes/mesh.h \
+		../TP3_Graphe_de_scenes/BasicIO.h \
+		/home/bourget-vecchio/Qt/5.12.11/gcc_64/include/QtCore/QString \
+		/home/bourget-vecchio/Qt/5.12.11/gcc_64/include/QtCore/QStringList \
+		/home/bourget-vecchio/Qt/5.12.11/gcc_64/include/QtCore/QFile \
+		/home/bourget-vecchio/Qt/5.12.11/gcc_64/include/QtCore/QDataStream
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../TP3_Graphe_de_scenes/main.cpp
 
 gameobject.o: ../TP3_Graphe_de_scenes/gameobject.cpp ../TP3_Graphe_de_scenes/gameobject.h \
@@ -1538,6 +1557,7 @@ mainwidget.o: ../TP3_Graphe_de_scenes/mainwidget.cpp ../TP3_Graphe_de_scenes/mai
 		/home/bourget-vecchio/Qt/5.12.11/gcc_64/include/QtGui/QOpenGLFunctions \
 		/home/bourget-vecchio/Qt/5.12.11/gcc_64/include/QtGui/qopenglfunctions.h \
 		/home/bourget-vecchio/Qt/5.12.11/gcc_64/include/QtGui/QMatrix4x4 \
+		/home/bourget-vecchio/Qt/5.12.11/gcc_64/include/QtGui/QVector4D \
 		/home/bourget-vecchio/Qt/5.12.11/gcc_64/include/QtGui/QQuaternion \
 		/home/bourget-vecchio/Qt/5.12.11/gcc_64/include/QtGui/QVector2D \
 		/home/bourget-vecchio/Qt/5.12.11/gcc_64/include/QtCore/QBasicTimer \
@@ -1546,10 +1566,10 @@ mainwidget.o: ../TP3_Graphe_de_scenes/mainwidget.cpp ../TP3_Graphe_de_scenes/mai
 		/home/bourget-vecchio/Qt/5.12.11/gcc_64/include/QtGui/qopengltexture.h \
 		../TP3_Graphe_de_scenes/camera.h \
 		/home/bourget-vecchio/Qt/5.12.11/gcc_64/include/QtGui/QVector3D \
-		/home/bourget-vecchio/Qt/5.12.11/gcc_64/include/QtCore/QTime \
-		/home/bourget-vecchio/Qt/5.12.11/gcc_64/include/QtCore/qdatetime.h \
 		../TP3_Graphe_de_scenes/gameobject.h \
 		../TP3_Graphe_de_scenes/transform.h \
+		/home/bourget-vecchio/Qt/5.12.11/gcc_64/include/QtCore/QTime \
+		/home/bourget-vecchio/Qt/5.12.11/gcc_64/include/QtCore/qdatetime.h \
 		../TP3_Graphe_de_scenes/mesh.h \
 		../TP3_Graphe_de_scenes/BasicIO.h \
 		/home/bourget-vecchio/Qt/5.12.11/gcc_64/include/QtCore/QString \

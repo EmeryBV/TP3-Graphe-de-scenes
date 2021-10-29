@@ -154,7 +154,7 @@ void MainWidget::initializeGL()
     //! [2]
 
     geometries = new GeometryEngine;
-
+    camera =  Camera(cameraPos,cameraFront);
     // Use QBasicTimer because its faster than QTimer
     timer.start(12, this);
     filepath =  QString("../TP3_Graphe_de_scenes/sphere.off");
@@ -259,34 +259,24 @@ void MainWidget::keyPressEvent(QKeyEvent *event)
     switch (event->key()) {
     case Qt::Key_D:
 
-        cameraPos[0]-=amplitude;
-        cameraFront[0]-=amplitude;
+        camera.cameraPosition[0]-=amplitude;
+        camera.cameraTarget[0]-=amplitude;
         update();
         break;
     case Qt::Key_Q:
-        cameraPos[0]+=amplitude;
-        cameraFront[0]+=amplitude;
+         camera.cameraPosition[0]+=amplitude;
+        camera.cameraTarget[0]+=amplitude;
         update();
         break;
 
     case Qt::Key_Z:
-        cameraPos[1]+=amplitude;
-        cameraFront[1]+=amplitude;
+         camera.cameraPosition[1]+=amplitude;
+        camera.cameraTarget[1]+=amplitude;
         update();
         break;
     case Qt::Key_S:
-        cameraPos[1]-=amplitude;
-        cameraFront[1]-=amplitude;
-        update();
-        break;
-    case Qt::Key_E:
-        cameraPos[2]+=amplitude;
-        cameraFront[2]+=amplitude;
-        update();
-        break;
-    case Qt::Key_A:
-        cameraPos[2]-=amplitude;
-        cameraFront[2]-=amplitude;
+         camera.cameraPosition[1]-=amplitude;
+        camera.cameraTarget[1]-=amplitude;
         update();
         break;
 
@@ -298,10 +288,10 @@ void MainWidget::keyPressEvent(QKeyEvent *event)
 
 void MainWidget::wheelEvent ( QWheelEvent * event )
 {
-    cameraPos[2]+=(event->delta()/120);
-    cameraFront[2]+=(event->delta()/120);
+
+    camera.cameraPosition[2]+=(event->delta()/120);
+    camera.cameraTarget[2]+=(event->delta()/120);
     update();
-//    scale+=(event->delta()/120);
 }
 
 
@@ -320,9 +310,9 @@ void MainWidget::paintGL()
     std::vector< std::vector< unsigned int >> faces;
 
 
-    camera =  Camera(cameraPos,cameraFront);
-    view = camera.getViewMatrix();
-    //    qDebug("rotation: %f ", rotation );
+
+
+//        qDebug("rotation: %f ", rotation );
     world->Rotate(rotation);
     Moon->resetModel();
     Earth->resetModel();
@@ -340,6 +330,8 @@ void MainWidget::paintGL()
     Earth->rotateAround(0.1,0.0,1.0,0.0);
     Earth->Translate(-10.0,0.0,0.0);
 
+
+
     Moon->assignParentTrans();
 
     Moon->Scale(0.1738);
@@ -349,10 +341,12 @@ void MainWidget::paintGL()
     Moon->Translate(-10.0,0.0,0.0);
 
 
+//    camera.cameraPosition=Earth->getObject() -QVector3D(0.0,0.0,-5.0);
+//    camera.cameraTarget-=Earth->getTransform().getTranslate();
+    view = camera.getViewMatrix();
     world->draw(&program,projection,view);
     update();
 
-    //    delete world
     //    world.rotateObject(0.1*(float)chrono.currentTime().second());
 
     //    QVector3D translationTest = QVector3D(1.0,0.0,0.0);
